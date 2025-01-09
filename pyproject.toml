@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "latex-clean-fig"
+version = "0.1.0"
+description = "A CLI tool to clean unused figure files in LaTeX projects"
+authors = ["Iztok Fister Jr. <iztok@iztok.dev>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+typer = "^0.15.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
