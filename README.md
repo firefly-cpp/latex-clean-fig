@@ -1,6 +1,14 @@
-# latex-clean-fig
+<h1 align="center">
+    latex-clean-fig
+</h1>
 
-## Motivation
+<p align="center">
+    <a href="#-motivation">🎯 Motivation</a> •
+    <a href="#-installation">📦 Installation</a> •
+    <a href="#-license">🔑 License</a>
+</p>
+
+## 🎯 Motivation
 
 The package provides a simple command-line tool to help authors clean up unused image files in a project directory before submitting a paper. Multiple versions of figures often accumulate in the folder during the writing process, making it cluttered and difficult to manage. This tool scans the LaTeX file for figures included using the \includegraphics command and compares them against the image files in the specified folder. It identifies unused images and removes them, leaving only the files referenced in the LaTeX document. This is especially useful for ensuring the project directory remains tidy and submission-ready.
 
@@ -8,7 +16,7 @@ The package provides a simple command-line tool to help authors clean up unused 
 
 ### pip
 
-Install latex-clean-fig with pip:
+Install `latex-clean-fig` with pip:
 
 ```sh
 pip install latex-clean-fig
@@ -21,8 +29,8 @@ clean-fig TEX_FILE FOLDER
 ```
 where:
 
-- TEX_FILE: Path to your LaTeX file.
-- FOLDER: Path to the folder containing image files.
+- `TEX_FILE`: Path to your LaTeX file.
+- `FOLDER`: Path to the folder containing image files.
 
 This will scan TEX_FILE for included figures and remove any unused image files from the FOLDER directory.
 
