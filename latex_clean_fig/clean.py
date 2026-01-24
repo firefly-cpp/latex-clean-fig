@@ -6,14 +6,23 @@ app = typer.Typer()
 
 # Function to extract included images from LaTeX file
 def extract_included_images(tex_file: str):
-    with open(tex_file, 'r') as file:
+    with open(tex_file, 'r', encoding="utf-8", errors="ignore") as file:
         content = file.read()
 
-    # Regex to match \includegraphics{...} or \includegraphics[...]{...} # TODO: check the other libraries
-    image_pattern = re.compile(r"\\includegraphics(?:\[.*?\])?\{(.+?)\}")
+    # Regex to match \includegraphics{...} or \includegraphics[...]{...}
+    image_pattern = re.compile(
+        r"\\includegraphics(?:\s*\[.*?\])?\s*\{\s*([^}]+?)\s*\}"
+    )
 
-    # Extract all image paths (normalize names to lowercase)
-    images = set(match.lower() for match in image_pattern.findall(content))
+    images = set()
+    for match in image_pattern.findall(content):
+        # Normalize: lowercase + strip directories
+        basename = os.path.basename(match.strip()).lower()
+        stem, _ = os.path.splitext(basename)
+
+        images.add(basename)  # e.g. myplot.pdf
+        images.add(stem)      # e.g. myplot
+
     return images
 
 # Function to find and remove unused images
