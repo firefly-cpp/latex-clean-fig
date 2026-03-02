@@ -40,7 +40,7 @@ def extract_included_images(tex_file: str):
     return images
 
 # Function to find and remove unused images
-def remove_unused_images(folder: str, tex_file: str):
+def remove_unused_images(folder: str, tex_file: str, dry_run: bool = False):
     # Extract images used in the LateX file
     included_images = extract_included_images(tex_file)
 
@@ -55,11 +55,10 @@ def remove_unused_images(folder: str, tex_file: str):
     removed_files = []
     total_files = 0
 
-    for file_name in folder_files:
-        file_path = os.path.join(folder, file_name)
+    for root, dirs, files in os.walk(folder):
+        for file_name in files:
+            file_path = os.path.join(root, file_name)
 
-        # Check if file is an image (by extension) and not in included images
-        if os.path.isfile(file_path):
             file1, file_ext = os.path.splitext(file_name)
             normalized_file1 = file1.lower()
 
@@ -74,14 +73,16 @@ def remove_unused_images(folder: str, tex_file: str):
 
                 if not matched:
                     typer.echo(f"Removing unused image: {file_name}")
-                    os.remove(file_path)
+                    if not dry_run:
+                        os.remove(file_path)
                     removed_files.append(file_name)
 
     return included_images, removed_files, total_files
 
 @app.command()
 def clean_images(tex_file: str = typer.Argument(..., help="Path to the LaTeX file."),
-                 folder: str = typer.Argument(..., help="Path to the folder containing images.")):
+                 folder: str = typer.Argument(..., help="Path to the folder containing images."),
+                 dry_run: bool = typer.Option(False, help="Run in dry-run mode without removing files.")):
     """Remove unused images from a folder based on a LaTeX file."""
     # Check if both path exist
     if not os.path.exists(tex_file):
@@ -92,7 +93,7 @@ def clean_images(tex_file: str = typer.Argument(..., help="Path to the LaTeX fil
         raise typer.Exit(code=1)
 
     # Remove unused images
-    included_images, removed_files, total_files = remove_unused_images(folder, tex_file)
+    included_images, removed_files, total_files = remove_unused_images(folder, tex_file, dry_run=dry_run)
 
     # Print stats
     typer.echo(f"Statistics:")
