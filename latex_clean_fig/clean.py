@@ -14,6 +14,12 @@ def extract_included_images(tex_file: str):
         r"\\includegraphics(?:\s*\[.*?\])?\s*\{\s*([^}]+?)\s*\}"
     )
 
+    # Regex to match \includegraphics{...} or \includegraphics[...]{...}
+    svg_image_pattern = re.compile(
+        r"\\includesvg(?:\s*\[.*?\])?\s*\{\s*([^}]+?)\s*\}"
+    )
+
+
     images = set()
     for match in image_pattern.findall(content):
         # Normalize: lowercase + strip directories
@@ -21,6 +27,14 @@ def extract_included_images(tex_file: str):
         stem, _ = os.path.splitext(basename)
 
         images.add(basename)  # e.g. myplot.pdf
+        images.add(stem)      # e.g. myplot
+
+    for match in svg_image_pattern.findall(content):
+        # Normalize: lowercase + strip directories
+        basename = os.path.basename(match.strip()).lower()
+        stem, _ = os.path.splitext(basename)
+
+        images.add(basename)  # e.g. myplot.svg
         images.add(stem)      # e.g. myplot
 
     return images
@@ -49,7 +63,7 @@ def remove_unused_images(folder: str, tex_file: str):
             file1, file_ext = os.path.splitext(file_name)
             normalized_file1 = file1.lower()
 
-            if file_ext.lower() in {'.png', '.jpg', '.jpeg', '.pdf', '.eps'}:
+            if file_ext.lower() in {'.png', '.jpg', '.jpeg', '.pdf', '.eps', '.svg'}:
                 total_files += 1
                 # Check for matches with extensions
                 matched = any(
