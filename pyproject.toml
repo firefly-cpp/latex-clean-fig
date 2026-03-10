@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "latex-clean-fig"
-version = "0.2.0"
+version = "0.3.0"
 description = "A CLI tool to clean unused figure files in LaTeX projects"
 authors = ["Iztok Fister Jr. <iztok@iztok.dev>"]
 readme = "README.md"
