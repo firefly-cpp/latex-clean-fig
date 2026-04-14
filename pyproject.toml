@@ -10,7 +10,7 @@ python = "^3.13"
 typer = "^0.20.1"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.3.4"
+pytest = ">=8.3.4,<10.0.0"
 
 [tool.poetry.scripts]
 clean-fig = "latex_clean_fig.clean:app"
