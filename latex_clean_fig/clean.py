@@ -113,8 +113,7 @@ def remove_unused_images(folder: str, tex_file: str, dry_run: bool = False):
                 total_files += 1
                 # Check for matches with extensions
                 matched = any(
-                    normalized_file1 == included_image.lower() or
-                    file_path == os.path.join(tex_file_root, included_image)
+                    normalized_file1 == os.path.splitext(os.path.basename(included_image))[0].lower()
                     for included_image in included_images
                 )
 
